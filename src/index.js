@@ -160,6 +160,51 @@ class Button extends React.Component {
     }
 }
 
+// Compteur avec incrémentation
+class Counter extends React.Component {
+    constructor(props) {
+        super(props);
+        // On peut initialiser le compteur à 4 par exemple
+        this.state = {value: props.init ? props.init : 0};
+    }
+
+    handleIncrement() {
+        this.setState(state => ({
+            value: ++state.value
+        }));
+    }
+
+    handleDecrement() {
+        this.setState(state => ({
+            value: --state.value
+        }));
+    }
+
+    // increment vaut 1 ou -1
+    /* handleChange(increment) {
+        this.setState(state => ({
+            value: state.value + increment
+        }));
+    } */
+
+    render() {
+        let buttonPlus = <button onClick={() => this.handleIncrement()}>+</button>;
+
+        // Quand le max du compteur est atteint
+        if (this.state.value >= this.props.max) {
+            buttonPlus = null;
+        }
+
+        return (
+            <div>
+                <button onClick={() => this.handleDecrement()}>-</button>
+                <span>{this.state.value}</span>
+                {buttonPlus}
+            </div>
+        );
+    }
+}
+
 // setInterval(() => {
     ReactDOM.render(
         <div>
@@ -171,6 +216,7 @@ class Button extends React.Component {
             <Button />
             <Counter />
             <Counter init={4} max={10} />
+            <Counter max={3} />
         </div>,
         document.getElementById('root4')
     );
