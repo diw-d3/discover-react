@@ -199,7 +199,7 @@ class Counter extends React.Component {
             <div>
                 <button onClick={() => this.handleDecrement()}>-</button>
                 <span>{this.state.value}</span>
-                {buttonPlus}
+                {this.state.value < this.props.max && <button onClick={() => this.handleIncrement()}>+</button>}
             </div>
         );
     }
@@ -221,6 +221,123 @@ class Counter extends React.Component {
         document.getElementById('root4')
     );
 // }, 1000);
+
+// Masquer un composant
+
+class Message extends React.Component {
+    render() {
+        if (!this.props.show) {
+            return null;
+        }
+
+        return (
+            <div>
+                {this.props.value}
+            </div>
+        );
+    }
+}
+
+class Greeting extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {isLogged: props.isLogged};
+    }
+
+    render() {
+        return (
+            <div>
+                <Message value="Vous êtes connecté !" show={this.state.isLogged} />
+                <button onClick={() => this.setState(
+                    (state) => ({isLogged: !state.isLogged})
+                )}>Afficher le message</button>
+            </div>
+        );
+    }
+}
+
+ReactDOM.render(
+    <Greeting isLogged={false} />,
+    document.getElementById('root5')
+);
+
+// Les listes
+class People extends React.Component {
+    render() {
+        // On parcours chaque élément
+        let list = this.props.peoples.map((people, index) =>
+            <li key={people.id}>{people.name}</li>
+        );
+
+        return (
+            <ul>
+                {list}
+            </ul>
+        );
+    }
+}
+
+// let peoples = [1, 2, 3, 4, 5];
+let peoples = [
+    { id: 1, name: 'Matthieu' },
+    { id: 2, name: 'Toto' }
+];
+
+ReactDOM.render(
+    <People peoples={peoples} />,
+    document.getElementById('root6')
+);
+
+let students = [
+    { id: 1, name: 'Matthieu', notes: [12, 11, 15] },
+    { id: 2, name: 'Jean', notes: [18, 19, 20, 11, 15] },
+    { id: 3, name: 'Paul', notes: [16, 6, 4, 3, 11, 15] }
+];
+
+class ClassRoom extends React.Component {
+    average(notes) {
+        let sum = 0;
+
+        for (let note of notes) {
+            sum += note;
+        }
+
+        return Math.round(sum / notes.length * 100) / 100;
+    }
+
+    totalAverage() {
+        let sum = 0;
+
+        for (let student of this.props.students) {
+            sum += this.average(student.notes);
+        }
+
+        return Math.round(sum / this.props.students.length * 100) / 100;
+    }
+
+    render() {
+        return (
+            <div>
+                <ul>
+                    {this.props.students.map(student =>
+                        <li key={student.id}>
+                            {student.name} a eu {student.notes.join(', ')}. <br />
+                            Sa moyenne est de {this.average(student.notes)}
+                        </li>
+                    )}
+                </ul>
+                <h3>La moyenne de la classe : {this.totalAverage()}</h3>
+                <h3>La meilleure note : {this.totalAverage()}</h3>
+                <h3>La moins bonne note : {this.totalAverage()}</h3>
+            </div>
+        );
+    }
+}
+
+ReactDOM.render(
+    <ClassRoom students={students} />,
+    document.getElementById('root7')
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
