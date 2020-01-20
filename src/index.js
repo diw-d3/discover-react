@@ -125,25 +125,37 @@ class Button extends React.Component {
         this.state = {isToggle: true};
 
         // Permet d'accéder à this dans la fonction
-        this.handleClick = this.handleClick.bind(this);
+        // this.handleClick = this.handleClick.bind(this);
     }
 
-    handleClick(event) {
+    handleClick = (event, monArgument) => {
+        console.log(monArgument); // Affiche toto
         console.log(event);
         this.setState(state => ({
             isToggle: !state.isToggle
         }));
 
-        this.setState(state => { 
+        /* this.setState(state => {
             return {isToggle: !state.isToggle};
-        });
+        }); */
     }
 
     render() {
+        let message;
+
+        if (this.state.isToggle) { // L'ampoule est éteinte
+            message = <h2>L'ampoule est éteinte.</h2>;
+        } else {
+            message = <h2>L'ampoule est allumée.</h2>;
+        }
+
         return (
-            <button onClick={this.handleClick}>
-                {this.state.isToggle ? 'On' : 'Off'}
-            </button>
+            <div>
+                {message}
+                <button onClick={(e) => this.handleClick(e, 'toto')}>
+                    {this.state.isToggle ? 'On' : 'Off'}
+                </button>
+            </div>
         );
     }
 }
@@ -157,6 +169,8 @@ class Button extends React.Component {
             <Clock timeZone="Europe/Paris" />
             <MyCounter />
             <Button />
+            <Counter />
+            <Counter init={4} max={10} />
         </div>,
         document.getElementById('root4')
     );
