@@ -315,6 +315,30 @@ class ClassRoom extends React.Component {
         return Math.round(sum / this.props.students.length * 100) / 100;
     }
 
+    bestNote() {
+        let notes = [];
+
+        for (let student of this.props.students) {
+            notes.push(Math.max(...student.notes)); // On ajoute la plus grande note de chaque élève
+        }
+
+        return Math.max(...notes);
+    }
+
+    worstNote() {
+        let worstNote = 20;
+
+        for (let student of this.props.students) {
+            for (let note of student.notes) {
+                if (note < worstNote) {
+                    worstNote = note;
+                }
+            }
+        }
+
+        return worstNote;
+    }
+
     render() {
         return (
             <div>
@@ -327,8 +351,8 @@ class ClassRoom extends React.Component {
                     )}
                 </ul>
                 <h3>La moyenne de la classe : {this.totalAverage()}</h3>
-                <h3>La meilleure note : {this.totalAverage()}</h3>
-                <h3>La moins bonne note : {this.totalAverage()}</h3>
+                <h3>La meilleure note : {this.bestNote()}</h3>
+                <h3>La moins bonne note : {this.worstNote()}</h3>
             </div>
         );
     }
